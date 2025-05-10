@@ -1,0 +1,149 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pygeoapi"
+dynamic = ["version"]
+description = "pygeoapi provides an API to geospatial data"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+keywords = ["geospatial", "data", "api"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Scientific/Engineering :: GIS"
+]
+dependencies = [
+    "Babel",
+    "click",
+    "filelock",
+    "Flask",
+    "jinja2",
+    "jsonschema",
+    "pydantic>2.0",
+    "pygeofilter",
+    "pygeoif",
+    "pyproj",
+    "python-dateutil",
+    "pytz",
+    "PyYAML",
+    "rasterio",
+    "requests",
+    "shapely",
+    "SQLAlchemy",
+    "tinydb"
+]
+
+[[project.authors]]
+name = "Tom Kralidis"
+email = "tomkralidis@gmail.com"
+
+[[project.maintainers]]
+name = "Tom Kralidis"
+email = "tomkralidis@gmail.com"
+
+[project.urls]
+homepage = "https://pygeoapi.io"
+repository = "https://github.com/geopython/pygeoapi"
+
+[project.scripts]
+pygeoapi = "pygeoapi:cli"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"" = "."
+
+[tool.setuptools.packages]
+find = { include = ["pygeoapi*"], exclude = ["pygeoapi.tests*"] }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pygeoapi.__version__"}
+
+[project.optional-dependencies]
+admin = [
+    "filelock",
+    "jsonpatch",
+    "gunicorn"
+]
+
+django = [
+    "Django",
+    "pydantic>2.0"
+]
+
+docker = [
+    "elasticsearch-dsl<8",
+    "geoalchemy2",
+    "pygeofilter[backend-sqlalchemy]",
+    "pygeoif",
+    "pygeometa",
+    "sodapy",
+    "s3fs<=2023.6.0",
+    "Flask>=2.2.0",
+    "Flask-Cors"
+]
+
+provider = [
+    "azure-identity",
+    "azure-storage-blob",
+    "cftime",
+    "elasticsearch",
+    "elasticsearch-dsl",
+    "fiona",
+    "GDAL<=3.8.4",
+    "geoalchemy2",
+    "geopandas",
+    "netCDF4",
+    "numpy==2.0.1",
+    "opensearch-dsl",
+    "opensearch-py",
+    "oracledb",
+    "pandas",
+    "psycopg2",
+    "pyarrow",
+    "pygeofilter[backend-sqlalchemy]",
+    "pygeoif",
+    "pygeometa",
+    "pymongo==4.6.3"
+]
+
+manager = [
+    "psycopg2"
+]
+
+starlette = [
+    "aiofiles",
+    "starlette",
+    "uvicorn[standard]"
+]
+
+dev = [
+    "flask_cors",
+    "pytest",
+    "pytest-cov",
+    "pytest-env",
+    "coverage",
+    "pyld",
+    "starlette",
+    "uvicorn[standard]",
+    "httpx",
+    "polyfactory",
+    "flake8"
+]
+
+# Meta-extras for convenience
+all = [
+    "pygeoapi[admin,django,docker,provider,manager,starlette,dev]"
+]
