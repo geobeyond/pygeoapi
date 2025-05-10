@@ -6,6 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "pygeoapi"
 dynamic = ["version"]
 description = "pygeoapi provides an API to geospatial data"
+authors = [{ name = "Tom Kralidis", email = "tomkralidis@gmail.com" }]
+maintainers = [{ name = "Tom Kralidis", email = "tomkralidis@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -40,14 +42,6 @@ dependencies = [
     "SQLAlchemy",
     "tinydb"
 ]
-
-[[project.authors]]
-name = "Tom Kralidis"
-email = "tomkralidis@gmail.com"
-
-[[project.maintainers]]
-name = "Tom Kralidis"
-email = "tomkralidis@gmail.com"
 
 [project.urls]
 homepage = "https://pygeoapi.io"
