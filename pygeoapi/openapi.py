@@ -563,13 +563,13 @@ def get_oas_30(cfg: dict, fail_on_invalid_collection: bool = True) -> dict:
 def detect_used_apis(cfg: dict) -> list:
     """
     Auto-detect which APIs are used based on configured providers
-    
+
     :param cfg: configuration dict
-    
+
     :returns: list of API names that are being used
     """
     used_apis = ['core']  # Core API is always included
-    
+
     # Check for collections and their providers
     for resource in cfg.get('resources', {}).values():
         if resource.get('type') == 'collection':
@@ -579,61 +579,65 @@ def detect_used_apis(cfg: dict) -> list:
                     used_apis.append('features')
                 elif provider_type == 'record' and 'records' not in used_apis:
                     used_apis.append('records')
-                elif provider_type == 'coverage' and 'coverages' not in used_apis:
+                elif (provider_type == 'coverage' and
+                      'coverages' not in used_apis):
                     used_apis.append('coverages')
                 elif provider_type == 'tile' and 'tiles' not in used_apis:
                     used_apis.append('tiles')
                 # Add other provider types as needed
-        
+
         # Check for processes
-        elif resource.get('type') == 'process' and 'processes' not in used_apis:
+        elif (resource.get('type') == 'process' and
+              'processes' not in used_apis):
             used_apis.append('processes')
-    
+
     return used_apis
 
 
 def get_filtered_apis(cfg: dict) -> dict:
     """
     Get API modules filtered according to configuration
-    
+
     :param cfg: configuration dict
-    
+
     :returns: dict of filtered API modules
     """
     all_api_modules = all_apis()
-    
+
     # Check if published_apis is configured
     published_apis_cfg = cfg.get('server', {}).get('published_apis', {})
     if not published_apis_cfg:
         return all_api_modules  # Return all APIs for backward compatibility
-    
+
     mode = published_apis_cfg.get('mode', 'all')
     include_list = published_apis_cfg.get('include', [])
     exclude_list = published_apis_cfg.get('exclude', [])
-    
+
     # Filter APIs based on mode
     if mode == 'all':
         filtered_apis = all_api_modules
     elif mode == 'auto':
         # Auto-detect based on configuration
         detected_apis = detect_used_apis(cfg)
-        filtered_apis = {k: v for k, v in all_api_modules.items() if k in detected_apis}
+        filtered_apis = {
+            k: v for k, v in all_api_modules.items() if k in detected_apis}
         # Add explicitly included APIs
         for api_name in include_list:
             if api_name in all_api_modules and api_name not in filtered_apis:
                 filtered_apis[api_name] = all_api_modules[api_name]
     elif mode == 'explicit':
         # Only include explicitly listed APIs
-        filtered_apis = {k: v for k, v in all_api_modules.items() if k in include_list}
+        filtered_apis = {k: v for k,
+                         v in all_api_modules.items() if k in include_list}
     else:
         # Default to all APIs for unrecognized modes
         filtered_apis = all_api_modules
-    
+
     # Remove explicitly excluded APIs
     for api_name in exclude_list:
         if api_name in filtered_apis:
             filtered_apis.pop(api_name)
-    
+
     return filtered_apis
 
 
